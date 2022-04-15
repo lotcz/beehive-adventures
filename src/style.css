@@ -33,7 +33,14 @@ html, body {
 	font-size: 170%;
 }
 
-.hidden {
+.game-fg {
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+
+.hidden,
+.ground-svg-host {
 	display: none !important;
 }
 

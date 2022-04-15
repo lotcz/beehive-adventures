@@ -1,4 +1,3 @@
-import SvgRenderer from "./SvgRenderer";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -8,73 +7,116 @@ import {
 	CORNER_UPPER_RIGHT
 } from "../model/GridModel";
 import {GROUND_STYLES} from "../builder/GroundStyle";
+import DomRenderer from "./DomRenderer";
+import {SVG} from "@svgdotjs/svg.js";
+import ParallaxRenderer from "./ParallaxRenderer";
+import Pixies from "../class/Pixies";
+import Vector2 from "../class/Vector2";
 
 const DEBUG_GROUND_RENDERER = false;
+const MAX_CANVAS_SIZE = new Vector2(8000, 8000);
 
-export default class GroundRenderer extends SvgRenderer {
+export default class GroundRenderer extends DomRenderer {
+	canvasHost;
+	canvas;
+	context2d;
+	svgHost;
 	group;
+	parallax;
+	cacheImage;
+	cacheImageScale;
 
-	constructor(game, model, draw) {
-		super(game, model, draw);
-		this.group = null;
+	constructor(game, ground, parallax, dom) {
+		super(game, ground, dom);
+
+		this.parallax = parallax;
+		this.cacheImage = null;
+		this.cacheImageScale = 1;
+		this.updatingCache = false;
+
+		this.onViewBoxSizeChangeHandler = () => this.updateViewBoxSize();
+		this.onViewBoxScaleChangeHandler = () => this.updateImageCache(() => this.render());
 	}
 
-	removeTileNeighbors(remaining, tile) {
-		const candidates = [];
-		candidates.push(tile);
+	activateInternal() {
+		this.canvasHost = this.addChildElement('div', 'ground-canvas-host');
+		this.canvas = this.createElement(this.canvasHost, 'canvas');
+		this.context2d = this.canvas.getContext("2d");
 
-		while (candidates.length > 0) {
-			const candidate = candidates[0];
-			candidates.splice(0, 1);
-			const index = remaining.indexOf(candidate);
-			if (index >= 0) {
-				remaining.splice(index, 1);
-				const neighborPositions = this.grid.getNeighbors(candidate.position);
-				const neighbors = neighborPositions.reduce((prev, current) => prev.concat(this.chessboard.getVisitors(current, (v) => v.type === candidate.type)), []);
-				neighbors.forEach((n) => {if (remaining.includes(n) && !candidates.includes(n)) candidates.push(n);});
-			}
+		this.svgHost = this.addChildElement('div', 'ground-svg-host');
+
+		this.updateViewBoxSize();
+		this.level.viewBoxSize.addOnChangeListener(this.onViewBoxSizeChangeHandler);
+		//this.level.viewBoxScale.addOnChangeListener(this.onViewBoxScaleChangeHandler);
+	}
+
+	deactivateInternal() {
+		this.removeElement(this.canvasHost);
+		this.canvasHost = null;
+		this.removeElement(this.svgHost);
+		this.svgHost = null;
+		this.level.viewBoxSize.removeOnChangeListener(this.onViewBoxSizeChangeHandler);
+		//this.level.viewBoxScale.removeOnChangeListener(this.onViewBoxScaleChangeHandler);
+	}
+
+	render() {
+		if (!this.cacheImage) {
+			this.updateImageCache(() => {
+				console.log('Cache loaded');
+				this.render();
+			});
+			return;
 		}
+		this.context2d.clearRect(
+			0,
+			0,
+			this.level.viewBoxSize.x,
+			this.level.viewBoxSize.y
+		);
+		this.context2d.drawImage(
+			this.cacheImage,
+			this.level.viewBoxCoordinates.x * this.cacheImageScale,
+			this.level.viewBoxCoordinates.y * this.cacheImageScale,
+			this.level.viewBoxSize.x * this.level.viewBoxScale.get() * this.cacheImageScale,
+			this.level.viewBoxSize.y * this.level.viewBoxScale.get() * this.cacheImageScale,
+			0,
+			0,
+			this.level.viewBoxSize.x,
+			this.level.viewBoxSize.y
+		);
 	}
 
-	getCornerNeighbor(tile, cornerType) {
-		let neighborPosition = null;
-		switch (cornerType) {
-			case CORNER_UPPER_LEFT:
-				neighborPosition = this.grid.getNeighborUp(tile.position);
-				break;
-			case CORNER_UPPER_RIGHT:
-				neighborPosition = this.grid.getNeighborUpperRight(tile.position);
-				break;
-			case CORNER_RIGHT:
-				neighborPosition = this.grid.getNeighborLowerRight(tile.position);
-				break;
-			case CORNER_LOWER_RIGHT:
-				neighborPosition = this.grid.getNeighborDown(tile.position);
-				break;
-			case CORNER_LOWER_LEFT:
-				neighborPosition = this.grid.getNeighborLowerLeft(tile.position);
-				break;
-			case CORNER_LEFT:
-				neighborPosition = this.grid.getNeighborUpperLeft(tile.position);
-				break;
-		}
-		return neighborPosition;
+	updateViewBoxSize() {
+		this.canvas.width = this.level.viewBoxSize.x;
+		this.canvas.height = this.level.viewBoxSize.y;
 	}
 
-	canUseCorner(tile, cornerType) {
-		const position = this.getCornerNeighbor(tile, cornerType);
-		const visitors = this.chessboard.getVisitors(position, (v) => v.type === tile.type);
-		return visitors.length === 0;
-	}
+	updateImageCache(onReady) {
+		if (this.updatingCache) return;
+		this.updatingCache = true;
 
-	renderInternal() {
 		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground');
 
-		if (this.group) this.group.remove();
+		this.draw = SVG().addTo(this.svgHost);
+
 		this.group = this.draw.group();
+		this.behind = this.group.group();
 		this.back = this.group.group();
 		this.front = this.group.group();
 
+		const levelSize = this.grid.getMaxCoordinates();
+		this.draw.size(levelSize.x, levelSize.y);
+		this.draw.viewbox(
+			0,
+			0,
+			levelSize.x,
+			levelSize.y
+		);
+/*
+		this.parallaxRenderer = new ParallaxRenderer(this.game, this.parallax, this.behind, this.behind);
+		this.parallaxRenderer.activate();
+		this.parallaxRenderer.render();
+*/
 		const tilesCollection = this.model.tiles;
 		const remaining = [...tilesCollection.children];
 
@@ -209,6 +251,94 @@ export default class GroundRenderer extends SvgRenderer {
 
 		}
 
+		const svgImage = new Image();
+		svgImage.onload = () => {
+			const canvas = this.createElement(this.svgHost, 'canvas');
+			this.cacheImageScale = 1;
+			if (svgImage.width > MAX_CANVAS_SIZE.x) {
+				this.cacheImageScale = MAX_CANVAS_SIZE.x / svgImage.width;
+			}
+			if ((svgImage.height * this.cacheImageScale) > MAX_CANVAS_SIZE.y) {
+				this.cacheImageScale = MAX_CANVAS_SIZE.y / svgImage.height;
+			}
+			canvas.width = svgImage.width * this.cacheImageScale;
+			canvas.height = svgImage.height * this.cacheImageScale;
+			console.log(svgImage.width);
+			console.log(svgImage.height);
+			const canvasCtx = canvas.getContext('2d');
+			canvasCtx.drawImage(
+				svgImage,
+				0,
+				0,
+				svgImage.width,
+				svgImage.height,
+				0,
+				0,
+				canvas.width,
+				canvas.height
+			);
+			this.cacheImage = new Image();
+			this.cacheImage.onload = () => {
+				this.updatingCache = false;
+				onReady();
+			}
+			this.cacheImage.src = canvas.toDataURL('image/png');
+			this.removeElement(canvas);
+		}
+		svgImage.src = Pixies.svg2url(this.draw.root().node);
+
+		this.group.remove();
+		this.group = null;
+		this.draw.remove();
+		this.draw = null;
+	}
+
+	removeTileNeighbors(remaining, tile) {
+		const candidates = [];
+		candidates.push(tile);
+
+		while (candidates.length > 0) {
+			const candidate = candidates[0];
+			candidates.splice(0, 1);
+			const index = remaining.indexOf(candidate);
+			if (index >= 0) {
+				remaining.splice(index, 1);
+				const neighborPositions = this.grid.getNeighbors(candidate.position);
+				const neighbors = neighborPositions.reduce((prev, current) => prev.concat(this.chessboard.getVisitors(current, (v) => v.type === candidate.type)), []);
+				neighbors.forEach((n) => {if (remaining.includes(n) && !candidates.includes(n)) candidates.push(n);});
+			}
+		}
+	}
+
+	getCornerNeighbor(tile, cornerType) {
+		let neighborPosition = null;
+		switch (cornerType) {
+			case CORNER_UPPER_LEFT:
+				neighborPosition = this.grid.getNeighborUp(tile.position);
+				break;
+			case CORNER_UPPER_RIGHT:
+				neighborPosition = this.grid.getNeighborUpperRight(tile.position);
+				break;
+			case CORNER_RIGHT:
+				neighborPosition = this.grid.getNeighborLowerRight(tile.position);
+				break;
+			case CORNER_LOWER_RIGHT:
+				neighborPosition = this.grid.getNeighborDown(tile.position);
+				break;
+			case CORNER_LOWER_LEFT:
+				neighborPosition = this.grid.getNeighborLowerLeft(tile.position);
+				break;
+			case CORNER_LEFT:
+				neighborPosition = this.grid.getNeighborUpperLeft(tile.position);
+				break;
+		}
+		return neighborPosition;
+	}
+
+	canUseCorner(tile, cornerType) {
+		const position = this.getCornerNeighbor(tile, cornerType);
+		const visitors = this.chessboard.getVisitors(position, (v) => v.type === tile.type);
+		return visitors.length === 0;
 	}
 
 	getCorner(position, corner) {

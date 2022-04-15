@@ -11,25 +11,14 @@ const DEBUG_LEVEL_RENDERER = false;
 export default class LevelRenderer extends SvgRenderer {
 	group;
 
-	constructor(game, model, draw) {
+	constructor(game, model, draw, bg) {
 		super(game, model, draw);
+
+		this.bg = bg;
+		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.model.parallax, this.bg);
 
 		this.group = this.draw.group();
 		this.group.addClass('level');
-
-		this.background = this.group.group().addClass('background');
-
-		// GROUND
-		this.ground = this.group.group().addClass('ground');
-		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground);
-		this.addChild(this.groundRenderer);
-
-		// FOREGROUND
-		this.foreground = this.group.group().addClass('foreground');
-
-		// PARALLAX
-		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
-		this.addChild(this.parallaxRenderer);
 
 		// SPRITES
 		this.sprites = this.group.group().addClass('sprites');
@@ -62,10 +51,12 @@ export default class LevelRenderer extends SvgRenderer {
 			const clipPath = this.draw.clip().add(text);
 			this.group.clipWith(clipPath);
 		}
+		this.groundRenderer.activate();
 	}
 
 	deactivateInternal() {
 		if (this.group) this.group.remove();
+		this.groundRenderer.deactivate();
 	}
 
 	renderInternal() {
@@ -76,9 +67,6 @@ export default class LevelRenderer extends SvgRenderer {
 		}
 
 		if (this.model.viewBoxSize.isDirty() || this.model.viewBoxCoordinates.isDirty() || this.model.viewBoxScale.isDirty()) {
-			if (HIDE_WHEN_OUTTA_SIGHT) {
-				this.spritesRenderer.updateOuttaSight();
-			}
 			this.draw.size(this.model.viewBoxSize.x, this.model.viewBoxSize.y);
 			this.draw.viewbox(
 				this.model.viewBoxCoordinates.x,
@@ -86,6 +74,7 @@ export default class LevelRenderer extends SvgRenderer {
 				this.model.viewBoxSize.x * this.model.viewBoxScale.get(),
 				this.model.viewBoxSize.y * this.model.viewBoxScale.get()
 			);
+			this.groundRenderer.render();
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}

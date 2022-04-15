@@ -12,12 +12,12 @@ const DEBUG_MASTER = true;
 
 const game = new GameModel();
 
-const draw = SVG().addTo(window.document.body);
+const dom = window.document.body;
 
-const controller = new GameController(game, draw.node);
+const controller = new GameController(game, dom);
 controller.activate();
 
-const renderer = new GameRenderer(game, draw);
+const renderer = new GameRenderer(game, dom);
 renderer.activate();
 
 if (DEBUG_MASTER) {

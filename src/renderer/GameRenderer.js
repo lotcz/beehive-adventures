@@ -9,20 +9,26 @@ import DomRenderer from "./DomRenderer";
 import TextModel from "../model/TextModel";
 import Pixies from "../class/Pixies";
 import BeeStateRenderer from "./BeeStateRenderer";
+import {SVG} from "@svgdotjs/svg.js";
 
 const DEBUG_FPS = true;
 
-export default class GameRenderer extends SvgRenderer {
+export default class GameRenderer extends DomRenderer {
 	loadingScreenRenderer;
 	levelRenderer;
 	menuRenderer;
 	editorRenderer;
-	dom;
+	bg;
+	fg;
+	draw;
 
-	constructor(model, draw) {
-		super(model, model, draw);
+	constructor(model, dom) {
+		super(model, model, dom);
 
-		this.dom = this.draw.root().parent().node;
+		this.addClass(this.dom, 'game-host');
+		this.bg = this.addChildElement('div', 'game-bg');
+		this.fg = this.addChildElement('div', 'game-fg');
+		this.draw = SVG().addTo(this.fg);
 
 		if (DEBUG_FPS) {
 			this.stats = new Stats();
@@ -35,8 +41,6 @@ export default class GameRenderer extends SvgRenderer {
 		this.menuRenderer = null;
 		this.editorRenderer = null;
 		this.statusBarRenderer = null;
-
-		this.draw.fill('black');
 
 		this.showLoading();
 		Pixies.destroyElement(document.getElementById('initial_loading'));
@@ -143,7 +147,7 @@ export default class GameRenderer extends SvgRenderer {
 		if (!this.game.level.isEmpty()) {
 			const loader = new ResourcesLoader(this.game.resources, this.draw, this.game.level.get().resources);
 			loader.load(() => {
-				this.levelRenderer = new LevelRenderer(this.game, this.game.level.get(), this.draw);
+				this.levelRenderer = new LevelRenderer(this.game, this.game.level.get(), this.draw, this.bg);
 				this.addChild(this.levelRenderer);
 				this.levelRenderer.activate();
 				console.log('activated Level renderer');

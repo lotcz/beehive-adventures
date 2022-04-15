@@ -1,4 +1,4 @@
-# The Seed
+# Beehive Adventures
 
 Build:
 `npm run build`
