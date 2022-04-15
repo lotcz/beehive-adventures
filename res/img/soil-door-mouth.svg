@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="152.12688"
+   height="134.05673"
+   viewBox="0 0 40.250235 35.469178"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="soil-door-mouth.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     width="150px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="3.0574074"
+     inkscape:cx="18.152635"
+     inkscape:cy="48.570563"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0.12585461,-2.6486816)">
+    <path
+       sodipodi:type="star"
+       style="fill:#313131;fill-opacity:1;stroke:#101010;stroke-width:9.6748;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:fill markers stroke"
+       id="path1796"
+       inkscape:flatsided="true"
+       sodipodi:sides="6"
+       sodipodi:cx="54.118725"
+       sodipodi:cy="64.294891"
+       sodipodi:r1="67.288414"
+       sodipodi:r2="79.162842"
+       sodipodi:arg1="0.80192558"
+       sodipodi:arg2="1.3255244"
+       inkscape:rounded="0.12"
+       inkscape:randomized="0"
+       d="M 100.90598,112.65483 C 95.102788,118.2693 43.39529,131.21229 35.63142,128.99381 27.867549,126.77533 -9.1951578,88.466822 -11.155836,80.633875 -13.116514,72.800928 1.5282772,21.549426 7.3314695,15.934956 13.134662,10.320485 64.84216,-2.6225049 72.60603,-0.40402828 80.3699,1.8144484 117.43261,40.12296 119.39329,47.955908 c 1.96067,7.832947 -12.68412,59.084452 -18.48731,64.698922 z"
+       transform="matrix(0.27142987,0.06773932,-0.06473307,0.25938393,9.4718311,0.04024303)" />
+  </g>
+</svg>

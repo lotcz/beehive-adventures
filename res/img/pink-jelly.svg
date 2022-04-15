@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="150.33833"
+   height="151.64662"
+   viewBox="0 0 39.777019 40.123168"
+   version="1.1"
+   id="svg973"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="pink-jelly.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview975"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     units="px"
+     inkscape:zoom="3.0574074"
+     inkscape:cx="37.122956"
+     inkscape:cy="45.626893"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs970">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect6152"
+       is_visible="true"
+       lpeversion="1" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect5936"
+       is_visible="true"
+       lpeversion="1" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-52.972682,-68.7219)">
+    <ellipse
+       style="fill:#ec757b;fill-opacity:0.76470602;stroke:#c65159;stroke-width:2.017;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.82745099"
+       id="path47907"
+       cx="72.861191"
+       cy="88.783485"
+       rx="18.880009"
+       ry="19.053085" />
+    <path
+       id="path7742"
+       style="fill:#f2a6b1;fill-opacity:1;stroke-width:1.36453;stroke-linecap:round;stroke-linejoin:bevel"
+       d="m 63.91506,75.287078 c 2.603728,-1.892461 6.113645,-2.336573 8.995948,-0.688073 1.892124,1.082181 -2.591076,2.285761 -5.170731,3.320823 -2.158861,0.86622 -4.631491,4.928074 -6.499957,3.791207 -1.868463,-1.136869 0.93649,-5.160543 2.67474,-6.423957 z"
+       sodipodi:nodetypes="sssss" />
+  </g>
+</svg>

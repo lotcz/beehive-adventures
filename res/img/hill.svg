@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="eTpvL3fO89o1"
+   viewBox="0 0 17550 8833"
+   shape-rendering="geometricPrecision"
+   text-rendering="geometricPrecision"
+   version="1.1"
+   sodipodi:docname="hill.svg"
+   width="17550"
+   height="8833"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs855" />
+  <sodipodi:namedview
+     id="namedview853"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     showgrid="false"
+     inkscape:zoom="0.04"
+     inkscape:cx="3812.5"
+     inkscape:cy="1637.5"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="eTpvL3fO89o1" />
+  <polygon
+     id="eTpvL3fO89o2"
+     points="-28.362238,9.210558 -38.210756,-5.018351 -28.362238,-9.849878 -25.366938,-22.196772 -28.362238,-27.670663 -28.362238,-30.677477 -23.924846,-24.573912 -14.9563,-37.621003 -14.9563,-33.674526 -21.332604,-22.196772 -21.332604,-7.691322 "
+     transform="matrix(-40.362053,0,0,63.271324,3686.1625,5038.2371)"
+     fill="#6c4938"
+     stroke="none"
+     stroke-width="0" />
+  <polygon
+     id="eTpvL3fO89o3"
+     points="-28.362238,9.210558 -38.210756,-5.018351 -28.362238,-9.849878 -25.366938,-22.196772 -28.362238,-27.670663 -28.362238,-30.677477 -23.924846,-24.573912 -14.9563,-37.621003 -14.9563,-33.674526 -21.332604,-22.196772 -21.332604,-7.691322 "
+     transform="matrix(-40.362053,0,0,63.271324,6134.4836,2497.0672)"
+     fill="#6c4938"
+     stroke="none"
+     stroke-width="0" />
+  <path
+     id="eTpvL3fO89o4"
+     d="m 25.885324,6019.4701 c 0,0 10616.396676,1017.9288 10616.396676,-1467.873 0,-1893.6906 4492.221,-2541.1698 4492.221,169.1223 q 0,1472.6169 2404.408,1298.7507"
+     fill="#3e9548"
+     stroke="#174525"
+     stroke-width="25.5459" />
+  <path
+     id="eTpvL3fO89o5"
+     d="m 11155.302,6067.9903 c 0,0 -6841.1461,773.1484 -6841.1461,-1114.8948 0,-1438.3165 -2894.762,-1930.097 -2894.762,128.4536 q 0,1118.498 -1549.38768,986.4412"
+     fill="#3e9548"
+     stroke="#174525"
+     stroke-width="17.8718" />
+  <polygon
+     id="eTpvL3fO89o6"
+     points="-28.362238,9.210558 -38.210756,-5.018351 -28.362238,-9.849878 -25.366938,-22.196772 -28.362238,-27.670663 -28.362238,-30.677477 -23.924846,-24.573912 -14.9563,-37.621003 -14.9563,-33.674526 -21.332604,-22.196772 -21.332604,-7.691322 "
+     transform="matrix(40.362053,0,0,63.271324,13216.696,5038.2371)"
+     fill="#6c4938"
+     stroke="none"
+     stroke-width="0" />
+  <path
+     id="eTpvL3fO89o7"
+     d="m 25.885324,6019.4701 c 4426.419676,0 6416.857276,-3058.1962 6416.857276,-3058.1962 2177.0738,-3618.1106 2124.5092,-3908.24861 3711.6524,0 q 1480.399,3063.133 7384.516,3058.1962"
+     fill="#3e9548"
+     stroke="#174525"
+     stroke-width="25.5459" />
+  <rect
+     id="eTpvL3fO89o8"
+     width="17513.025"
+     height="2783.9849"
+     rx="0"
+     ry="0"
+     fill="#3f9549"
+     stroke="none"
+     stroke-width="0"
+     x="25.885334"
+     y="5996.0151" />
+</svg>

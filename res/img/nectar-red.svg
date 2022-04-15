@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="ehnPv1x25VC1"
+   viewBox="0 0 130 130"
+   shape-rendering="geometricPrecision"
+   text-rendering="geometricPrecision"
+   version="1.1"
+   sodipodi:docname="nectar-red.svg"
+   width="130"
+   height="130"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3851" />
+  <sodipodi:namedview
+     id="namedview3849"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="4.16"
+     inkscape:cx="17.668269"
+     inkscape:cy="55.408654"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="ehnPv1x25VC1" />
+  <ellipse
+     id="ellipse162680"
+     rx="64.290398"
+     ry="64.288635"
+     fill="#284e95"
+     stroke="none"
+     stroke-width="0"
+     cx="65.131744"
+     cy="65.129982"
+     style="fill:#54080e;fill-opacity:1" />
+  <ellipse
+     id="ehnPv1x25VC2"
+     rx="59.416859"
+     ry="57.373592"
+     fill="#284e95"
+     stroke="none"
+     stroke-width="0"
+     cx="21.275824"
+     cy="82.418045"
+     style="fill:#84141d;fill-opacity:1"
+     transform="matrix(0.85612405,-0.51677037,0.51850522,0.85507447,0,0)" />
+  <ellipse
+     id="ellipse159132"
+     rx="39.993355"
+     ry="34.140465"
+     fill="#284e95"
+     stroke="none"
+     stroke-width="0"
+     cx="19.659185"
+     cy="59.920395"
+     style="fill:#bc444e;fill-opacity:1"
+     transform="matrix(0.83755319,-0.54635579,0.55023259,0.83501143,0,0)" />
+  <ellipse
+     id="ehnPv1x25VC3"
+     fill="#a7b4cd"
+     stroke="none"
+     stroke-width="0"
+     cx="20.326899"
+     cy="47.040718"
+     style="fill:#d07373;fill-opacity:1"
+     rx="14.208838"
+     ry="12.395134"
+     transform="matrix(0.81981592,-0.57262716,0.57651835,0.8170842,0,0)" />
+</svg>

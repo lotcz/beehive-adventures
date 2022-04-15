@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="337.54089"
+   height="307.45004"
+   viewBox="0 0 89.307695 81.346157"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="exit.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="px"
+     inkscape:zoom="0.76435185"
+     inkscape:cx="376.13568"
+     inkscape:cy="308.10418"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1272"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-5.5384674,-8.3076859)">
+    <ellipse
+       style="fill:#000000;fill-opacity:0.512821;stroke-width:2.6376;stroke-linejoin:bevel"
+       id="path848"
+       cx="50.192314"
+       cy="48.980762"
+       rx="44.653847"
+       ry="40.673077" />
+    <ellipse
+       style="fill:#000000;fill-opacity:1;stroke-width:0.634567;stroke-linejoin:bevel"
+       id="path846"
+       cx="43.420532"
+       cy="45.618359"
+       rx="26.14035"
+       ry="24.069681" />
+    <ellipse
+       style="fill:#000000;fill-opacity:0.512821;stroke-width:2.06023;stroke-linejoin:bevel"
+       id="ellipse3375"
+       cx="45.742744"
+       cy="47.596149"
+       rx="33.987267"
+       ry="32.603615" />
+  </g>
+</svg>
