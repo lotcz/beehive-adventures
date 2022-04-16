@@ -13,6 +13,7 @@ module.exports = {
 	devtool: 'inline-source-map',
 	devServer: {
 		contentBase: './dist',
+		host: '10.0.0.2'
 	},
 	plugins: [
 		new HtmlWebpackPlugin({

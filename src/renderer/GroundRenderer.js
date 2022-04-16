@@ -97,14 +97,30 @@ export default class GroundRenderer extends DomRenderer {
 
 		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground');
 
+		const levelSize = this.grid.getMaxCoordinates();
+
 		this.draw = SVG().addTo(this.svgHost);
+		let fill = null;
+		if (this.model.backgroundColor !== this.model.backgroundColorEnd) {
+			const gradient = this.draw.gradient('linear', (add) => {
+				add.stop(0, this.parallax.backgroundColor);
+				add.stop(1, this.parallax.backgroundColorEnd);
+				add.from(0, 0);
+				add.to(0, 1);
+			});
+			fill = gradient;
+		} else {
+			fill = this.parallax.backgroundColor;
+		}
+
+		this.draw.rect(levelSize.x, levelSize.y).fill(fill);
 
 		this.group = this.draw.group();
 		this.behind = this.group.group();
 		this.back = this.group.group();
 		this.front = this.group.group();
 
-		const levelSize = this.grid.getMaxCoordinates();
+
 		this.draw.size(levelSize.x, levelSize.y);
 		this.draw.viewbox(
 			0,

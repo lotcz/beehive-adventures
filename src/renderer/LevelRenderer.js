@@ -31,6 +31,8 @@ export default class LevelRenderer extends SvgRenderer {
 			this.addChild(this.beeRenderer);
 		}
 
+		this.curtain = this.group.group().addClass('curtain');
+
 		this.model.resources.addOnAddListener((resource) => this.onAddResource(resource));
 
 		this.clipPath = null;
@@ -75,6 +77,14 @@ export default class LevelRenderer extends SvgRenderer {
 				this.model.viewBoxSize.y * this.model.viewBoxScale.get()
 			);
 			this.groundRenderer.render();
+
+			if (this.clipPath && this.model.clipAmount.get() > 0) {
+				this.curtainContent.move(this.model.viewBoxCoordinates.x, this.model.viewBoxCoordinates.y);
+				this.curtainContent.size(this.model.viewBoxSize.x * this.model.viewBoxScale.get(), this.model.viewBoxSize.y * this.model.viewBoxScale.get());
+				this.maskBg.move(this.model.viewBoxCoordinates.x, this.model.viewBoxCoordinates.y);
+				this.maskBg.size(this.model.viewBoxSize.x * this.model.viewBoxScale.get(), this.model.viewBoxSize.y * this.model.viewBoxScale.get());
+			}
+
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}
@@ -82,19 +92,37 @@ export default class LevelRenderer extends SvgRenderer {
 		if (this.model.clipAmount.isDirty() || this.model.clipCenter.isDirty()) {
 			if (this.model.clipAmount.get() > 0) {
 				if (!this.clipPath) {
-					this.clipCircle = this.draw.circle(150);
-					this.clipPath = this.draw.clip().add(this.clipCircle);
-					this.group.clipWith(this.clipPath);
+					this.curtainContent = this.curtain.rect(
+						this.model.viewBoxCoordinates.x,
+						this.model.viewBoxCoordinates.y,
+						this.model.viewBoxSize.x * this.model.viewBoxScale.get(),
+						this.model.viewBoxSize.y * this.model.viewBoxScale.get()
+					).fill('black');
+
+					this.maskBg = this.curtain.rect(
+						this.model.viewBoxCoordinates.x,
+						this.model.viewBoxCoordinates.y,
+						this.model.viewBoxSize.x * this.model.viewBoxScale.get(),
+						this.model.viewBoxSize.y * this.model.viewBoxScale.get()
+					).fill('white');
+					this.clipCircle = this.curtain.circle(15).fill('black');
+					this.clipPath = this.curtain.mask();
+					this.clipPath.add(this.maskBg);
+					this.clipPath.add(this.clipCircle);
+					this.curtain.maskWith(this.clipPath);
 				}
-				const diameter = this.model.viewBoxSize.size();
-				const radius = (diameter * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
+				const diameter = this.model.viewBoxSize.size() * this.model.viewBoxScale.get();
+				const radius = diameter * (1 - this.openTween(this.model.clipAmount.get()));
 				this.clipCircle.radius(Math.max(radius, 0));
 				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 			} else {
 				if (this.clipPath) {
-					this.group.unclip();
+					this.curtain.unmask();
 					this.clipPath.remove();
 					this.clipPath = null;
+					this.curtainContent.remove();
+					this.curtainContent = null;
+					this.clipCircle.remove();
 					this.clipCircle = null;
 				}
 			}
