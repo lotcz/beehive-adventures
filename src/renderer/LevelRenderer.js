@@ -1,8 +1,9 @@
 import SvgRenderer from "./SvgRenderer";
 import BeeRenderer from "./BeeRenderer";
-import GroundRenderer from "./GroundRenderer";
+import GroundCachedRenderer from "./GroundCachedRenderer";
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
 import ResourceLoader from "../class/ResourceLoader";
+import GroundLiveRenderer from "./GroundLiveRenderer";
 
 const DEBUG_LEVEL_RENDERER = false;
 
@@ -13,10 +14,13 @@ export default class LevelRenderer extends SvgRenderer {
 		super(game, model, draw);
 
 		this.bg = bg;
-		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.model.parallax, this.bg);
+		this.groundRenderer = null;
 
 		this.group = this.draw.group();
 		this.group.addClass('level');
+
+		// for live ground in edit mode
+		this.ground = this.group.group().addClass('ground');
 
 		// SPRITES
 		this.sprites = this.group.group().addClass('sprites');
@@ -31,7 +35,13 @@ export default class LevelRenderer extends SvgRenderer {
 
 		this.curtain = this.group.group().addClass('curtain');
 
-		this.model.resources.addOnAddListener((resource) => this.onAddResource(resource));
+		this.resourceAddedHandler = (resource) => this.onAddResource(resource);
+		this.editModeChangedHandler = () => {
+			if (this.isActivated()) {
+				this.updateGroundRenderer();
+				this.groundRenderer.activate();
+			}
+		}
 
 		this.clipPath = null;
 		this.clipCircle = null;
@@ -60,12 +70,22 @@ export default class LevelRenderer extends SvgRenderer {
 			this.clipPath.add(text);
 			this.curtain.maskWith(this.clipPath);
 		}
+
+		this.updateGroundRenderer();
 		this.groundRenderer.activate();
+
+		this.model.resources.addOnAddListener(this.resourceAddedHandler);
+		this.game.isInEditMode.addOnChangeListener(this.editModeChangedHandler);
 	}
 
 	deactivateInternal() {
 		if (this.group) this.group.remove();
-		this.groundRenderer.deactivate();
+		if (this.groundRenderer) {
+			this.removeChild(this.groundRenderer);
+			this.groundRenderer = null;
+		}
+		this.model.resources.removeOnAddListener(this.resourceAddedHandler);
+		this.game.isInEditMode.removeOnChangeListener(this.editModeChangedHandler);
 	}
 
 	renderInternal() {
@@ -83,7 +103,7 @@ export default class LevelRenderer extends SvgRenderer {
 				this.model.viewBoxSize.x * this.model.viewBoxScale.get(),
 				this.model.viewBoxSize.y * this.model.viewBoxScale.get()
 			);
-			this.groundRenderer.render();
+			//this.groundRenderer.render();
 
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
@@ -127,6 +147,19 @@ export default class LevelRenderer extends SvgRenderer {
 			this.model.clipAmount.clean();
 			this.model.clipCenter.clean();
 		}
+	}
+
+	updateGroundRenderer() {
+		if (this.groundRenderer) {
+			this.removeChild(this.groundRenderer);
+			this.groundRenderer = null;
+		}
+		if (this.game.isInEditMode.get()) {
+			this.groundRenderer = new GroundLiveRenderer(this.game, this.model.ground,  this.model.parallax, this.ground);
+		} else {
+			this.groundRenderer = new GroundCachedRenderer(this.game, this.model.ground, this.model.parallax, this.bg);
+		}
+		this.addChild(this.groundRenderer);
 	}
 
 	openTween(value) {

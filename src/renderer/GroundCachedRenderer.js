@@ -9,14 +9,13 @@ import {
 import {GROUND_STYLES} from "../builder/GroundStyle";
 import DomRenderer from "./DomRenderer";
 import {SVG} from "@svgdotjs/svg.js";
-import ParallaxRenderer from "./ParallaxRenderer";
 import Pixies from "../class/Pixies";
 import Vector2 from "../class/Vector2";
 
 const DEBUG_GROUND_RENDERER = false;
 const MAX_CANVAS_SIZE = new Vector2(8000, 8000);
 
-export default class GroundRenderer extends DomRenderer {
+export default class GroundCachedRenderer extends DomRenderer {
 	canvasHost;
 	canvas;
 	context2d;
@@ -35,7 +34,7 @@ export default class GroundRenderer extends DomRenderer {
 		this.updatingCache = false;
 
 		this.onViewBoxSizeChangeHandler = () => this.updateViewBoxSize();
-		this.onViewBoxScaleChangeHandler = () => this.updateImageCache(() => this.render());
+		//this.onViewBoxScaleChangeHandler = () => this.updateImageCache(() => this.render());
 	}
 
 	activateInternal() {
@@ -60,9 +59,10 @@ export default class GroundRenderer extends DomRenderer {
 	}
 
 	render() {
-		if (!this.cacheImage) {
+		if (this.model.isDirty() || !this.cacheImage) {
 			this.updateImageCache(() => {
 				console.log('Cache loaded');
+				this.model.clean();
 				this.render();
 			});
 			return;
