@@ -53,11 +53,11 @@ export default class GameRenderer extends DomRenderer {
 
 		if (this.model.isFullscreen.isDirty()) {
 			if (this.model.isFullscreen.get()) {
-				Pixies.addClass(this.draw.root().node, 'fullscreen');
-				Pixies.removeClass(this.draw.root().node, 'window');
+				Pixies.addClass(this.dom, 'fullscreen');
+				Pixies.removeClass(this.dom, 'window');
 			} else {
-				Pixies.addClass(this.draw.root().node, 'window');
-				Pixies.removeClass(this.draw.root().node, 'fullscreen');
+				Pixies.addClass(this.dom, 'window');
+				Pixies.removeClass(this.dom, 'fullscreen');
 			}
 			this.model.isFullscreen.clean();
 		}

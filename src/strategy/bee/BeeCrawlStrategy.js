@@ -42,10 +42,15 @@ export default class BeeCrawlStrategy extends ControllerBase {
 	}
 
 	activateInternal() {
+		/*
 		const crawlingPosition = this.grid.getNeighbor(this.model.position, this.model.crawling.get());
 		const down = this.grid.getNeighborDown(crawlingPosition);
 		if (this.level.isPenetrable(down)) {
 			this.parent.inspectForMinerals(crawlingPosition);
+		}
+*/
+		if (this.model.inventory.isSet() && ((!this.model.inventory.get()._is_penetrable))) {
+			this.parent.emptyInventory();
 		}
 
 		this.model.rotation.set(this.getRotation(this.model.crawling.get()));
