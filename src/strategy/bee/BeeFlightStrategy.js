@@ -107,13 +107,15 @@ export default class BeeFlightStrategy extends ControllerBase {
 			const speedup = SPEEDUP_SPEED * (1 - Pixies.between(0, 0.5, 0.5 * carriedAmount / MINERAL_MAX_AMOUNT));
 			if (this.controls.movingUp.get()) {
 				direction = direction.addY(-speedup * secsDelta);
-			} else if (this.controls.movingDown.get()) {
+			}
+			if (this.controls.movingDown.get()) {
 				direction = direction.addY(speedup * secsDelta);
 			}
 			if (this.controls.movingLeft.get()) {
 				direction = direction.addX(-speedup * secsDelta);
 				this.model.headingLeft.set(true);
-			} else if (this.controls.movingRight.get()) {
+			}
+			if (this.controls.movingRight.get()) {
 				direction = direction.addX(speedup * secsDelta);
 				this.model.headingLeft.set(false);
 			}

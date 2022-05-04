@@ -218,7 +218,6 @@ TODO:
 BETA for friends
 ----------------
 
-- fix picking and carrying
 - heal by eating honey or nectar, packed in doses or feeded from honeymaker
 - finish levels
 - add all sounds
