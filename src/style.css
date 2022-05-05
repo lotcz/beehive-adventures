@@ -13,6 +13,7 @@ svg * {
 	-moz-user-select: none;
 	-o-user-select: none;
 	user-select: none;
+	position: fixed;
 }
 
 html, body {
@@ -74,10 +75,6 @@ body.window .game-fg {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-}
-
-.menu.main ul li {
-	flex: 1 1 auto;
 }
 
 .menu.list ul {

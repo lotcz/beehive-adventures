@@ -95,7 +95,7 @@ export default class GroundCachedRenderer extends DomRenderer {
 		if (this.updatingCache) return;
 		this.updatingCache = true;
 
-		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground');
+		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground CACHED');
 
 		const levelSize = this.grid.getMaxCoordinates();
 
@@ -178,8 +178,8 @@ export default class GroundCachedRenderer extends DomRenderer {
 			const startCorner = currentCorner;
 
 			if (DEBUG_GROUND_RENDERER) {
-				const corner = this.getCorner(startTile.position, startCorner);
-				this.front.circle(50).fill('rgba(80, 80, 80, 0.5)').center(corner.x, corner.y);
+				//const corner = this.getCorner(startTile.position, startCorner);
+				//this.front.circle(50).fill('rgba(80, 80, 80, 0.5)').center(corner.x, corner.y);
 			}
 
 			const points = [];
@@ -241,15 +241,15 @@ export default class GroundCachedRenderer extends DomRenderer {
 
 				if (DEBUG_GROUND_RENDERER) {
 					//this.front.circle(25).fill('rgba(100, 100, 255, 0.5)').center(points[0].x, points[0].y);
-					this.front.circle(20).fill('rgba(100, 100, 20, 0.5)').center(middle.x, middle.y);
+					//this.front.circle(20).fill('rgba(100, 100, 20, 0.5)').center(middle.x, middle.y);
 				}
 
 				for (let i = 1, max = points.length - 1; i < max; i++) {
 					middle = points[i].add(points[i + 1]).multiply(0.5);
 					path += `S ${points[i].x} ${points[i].y}, ${middle.x} ${middle.y}`;
 					if (DEBUG_GROUND_RENDERER) {
-						this.front.circle(25).fill('rgba(100, 100, 255, 0.5)').center(points[i].x, points[i].y);
-						this.front.circle(20).fill('rgba(100, 100, 20, 0.5)').center(middle.x, middle.y);
+						//this.front.circle(25).fill('rgba(100, 100, 255, 0.5)').center(points[i].x, points[i].y);
+						//this.front.circle(20).fill('rgba(100, 100, 20, 0.5)').center(middle.x, middle.y);
 					}
 				}
 

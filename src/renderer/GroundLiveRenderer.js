@@ -98,7 +98,7 @@ export default class GroundLiveRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
-		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground');
+		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground LIVE');
 
 		if (this.group) this.group.remove();
 		this.group = this.draw.group();
