@@ -31,7 +31,7 @@ import {STRATEGY_SNAIL} from "../builder/sprites/SpriteStyleAnimals";
 export const BEE_CENTER = new Vector2(1000, 1000);
 const HEALING_SPEED = 0.01; // health per second
 const MAX_INVENTORY_AMOUNT = DEFAULT_OBJECT_MAX_AMOUNT;
-const DROP_ITEM_TIMEOUT = 100;
+const DROP_ITEM_TIMEOUT = 500;
 const STARS_TIMEOUT = 3000;
 const HEALTH_HIGHLIGHT_TIMEOUT = 3000;
 
@@ -319,7 +319,7 @@ export default class BeeController extends ControllerBase {
 				item.image.scale.set(ObjectStrategy.getObjectScale(this.model.inventory.get().data.amount, MAX_INVENTORY_AMOUNT));
 			}
 			if (this.model.isFlying()) {
-				if (item.image.scale.get() >= 1 || item.strategy.equalsTo(STRATEGY_SNAIL)) {
+				if (item.strategy.equalsTo(STRATEGY_SNAIL)) {
 					item.image.coordinates.set(BEE_CENTER.addY(this.grid.tileRadius.get() * 2));
 				} else {
 					item.image.coordinates.set(BEE_CENTER.addY(80));

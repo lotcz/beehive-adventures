@@ -107,6 +107,14 @@ export default class Pixies {
 		return arr.filter((value, index, self) => self.indexOf(value) === index);
 	}
 
+	static svg2url(svg) {
+		const xml = new XMLSerializer().serializeToString(svg);
+		const svg64 = btoa(xml); //for utf8: btoa(unescape(encodeURIComponent(xml)))
+		const b64start = 'data:image/svg+xml;base64,';
+		const image64 = b64start + svg64;
+		return image64;
+	}
+
 	/*
 	DEBUGGER
 

@@ -8,16 +8,16 @@ import Pixies from "./class/Pixies";
 
 const MAX_DELTA = 500;
 const PROFILING_MASTER = false;
-const DEBUG_MASTER = true;
+const DEBUG_MASTER = false;
 
 const game = new GameModel();
 
-const draw = SVG().addTo(window.document.body);
+const dom = window.document.body;
 
-const controller = new GameController(game, draw.node);
+const controller = new GameController(game, dom);
 controller.activate();
 
-const renderer = new GameRenderer(game, draw);
+const renderer = new GameRenderer(game, dom);
 renderer.activate();
 
 if (DEBUG_MASTER) {

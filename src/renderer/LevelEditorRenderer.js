@@ -45,6 +45,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.spriteAddedHandler = (sprite) => this.spriteAdded(sprite);
 		this.spriteRemovedHandler = (sprite) => this.spriteRemoved(sprite);
 
+		this.stopEventPropagationHandler = (e) => e.stopPropagation();
+
 		this.actions = {
 			reload: () => this.reload(),
 			saveAndReload: () => this.saveAndReload(),
@@ -73,6 +75,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 		this.highlights = this.group.group().addClass('highlights');
 
 		this.gui = new dat.GUI();
+		this.gui.domElement.addEventListener('mousemove', this.stopEventPropagationHandler);
+		this.gui.domElement.addEventListener('mousedown', this.stopEventPropagationHandler);
+		this.gui.domElement.addEventListener('mouseup', this.stopEventPropagationHandler);
+		this.gui.domElement.addEventListener('keydown', this.stopEventPropagationHandler);
+		this.gui.domElement.addEventListener('keyup', this.stopEventPropagationHandler);
 		this.gui.add(level, 'name').listen()
 
 		const levelFolder = this.gui.addFolder('Level');
@@ -152,6 +159,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			this.spriteHelpers = null;
 		}
 		if (this.gui) {
+			this.gui.domElement.removeEventListener('mousemove', this.stopEventPropagationHandler);
+			this.gui.domElement.removeEventListener('mousedown', this.stopEventPropagationHandler);
+			this.gui.domElement.removeEventListener('mouseup', this.stopEventPropagationHandler);
+			this.gui.domElement.removeEventListener('keydown', this.stopEventPropagationHandler);
+			this.gui.domElement.removeEventListener('keyup', this.stopEventPropagationHandler);
 			this.gui.destroy();
 			this.gui = null;
 		}
@@ -345,13 +357,25 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	//<editor-fold desc="Additional GUI">
 
 	hideAdditionalGUI() {
-		this.additionalGUI.forEach((gui) => gui.destroy());
+		this.additionalGUI.forEach((gui) => {
+			gui.domElement.removeEventListener('mousemove', this.stopEventPropagationHandler);
+			gui.domElement.removeEventListener('mousedown', this.stopEventPropagationHandler);
+			gui.domElement.removeEventListener('mouseup', this.stopEventPropagationHandler);
+			gui.domElement.removeEventListener('keydown', this.stopEventPropagationHandler);
+			gui.domElement.removeEventListener('keyup', this.stopEventPropagationHandler);
+			gui.destroy();
+		});
 		this.additionalGUI = [];
 		this.hideJsonEditor();
 	}
 
 	newAdditionalGUI() {
 		const gui = new dat.GUI();
+		gui.domElement.addEventListener('mousemove', this.stopEventPropagationHandler);
+		gui.domElement.addEventListener('mousedown', this.stopEventPropagationHandler);
+		gui.domElement.addEventListener('mouseup', this.stopEventPropagationHandler);
+		gui.domElement.addEventListener('keydown', this.stopEventPropagationHandler);
+		gui.domElement.addEventListener('keyup', this.stopEventPropagationHandler);
 		this.additionalGUI.push(gui);
 		return gui;
 	}
@@ -403,6 +427,11 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	hideJsonEditor() {
 		if (this.jsonEditor) {
+			this.jsonEditor.removeEventListener('mousemove', this.stopEventPropagationHandler);
+			this.jsonEditor.removeEventListener('mousedown', this.stopEventPropagationHandler);
+			this.jsonEditor.removeEventListener('mouseup', this.stopEventPropagationHandler);
+			this.jsonEditor.removeEventListener('keydown', this.stopEventPropagationHandler);
+			this.jsonEditor.removeEventListener('keyup', this.stopEventPropagationHandler);
 			Pixies.destroyElement(this.jsonEditor);
 			this.jsonEditor = null;
 		}
@@ -411,6 +440,12 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	showJsonEditor(obj, onUpdate) {
 		this.hideJsonEditor();
 		this.jsonEditor = Pixies.createElement(this.dom, 'div', ['menu', 'json-editor']);
+		this.jsonEditor.addEventListener('mousemove', this.stopEventPropagationHandler);
+		this.jsonEditor.addEventListener('mousedown', this.stopEventPropagationHandler);
+		this.jsonEditor.addEventListener('mouseup', this.stopEventPropagationHandler);
+		this.jsonEditor.addEventListener('keydown', this.stopEventPropagationHandler);
+		this.jsonEditor.addEventListener('keyup', this.stopEventPropagationHandler);
+
 		const input = Pixies.createElement(this.jsonEditor, 'textarea');
 		input.wrap = "soft";
 		const str = JSON.stringify(obj, null, 2);

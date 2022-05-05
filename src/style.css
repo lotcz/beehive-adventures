@@ -13,14 +13,7 @@ svg * {
 	-moz-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-}
-
-svg.window {
-	position: absolute;
-	overflow: hidden;
-	display: block;
-	left: 33%;
-	top: 15%;
+	position: fixed;
 }
 
 html, body {
@@ -33,7 +26,26 @@ html, body {
 	font-size: 170%;
 }
 
-.hidden {
+.game-fg {
+	position: fixed;
+	left: 0;
+	top: 0;
+}
+
+body.window {
+	position: absolute;
+	overflow: hidden;
+	display: block;
+	left: 33%;
+	top: 15%;
+}
+
+body.window .game-fg {
+	position: absolute;
+}
+
+.hidden,
+.ground-svg-host {
 	display: none !important;
 }
 
@@ -63,10 +75,6 @@ html, body {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-}
-
-.menu.main ul li {
-	flex: 1 1 auto;
 }
 
 .menu.list ul {

@@ -18,9 +18,9 @@ export default class ControlsController extends ControllerBase {
 		this.dom.addEventListener('mousedown', (e) => this.updateMouseButtons(e));
 		this.dom.addEventListener('mouseup', (e) => this.updateMouseButtons(e));
 		this.dom.addEventListener('wheel', (e) => this.onZoom(e), {passive: true});
-		window.addEventListener('keydown', (e) => this.onKeyDown(e), false );
-		window.addEventListener('keyup', (e) => this.onKeyUp(e), false );
-		window.addEventListener('contextmenu', (e) => this.onContextMenu(e), false );
+		this.dom.addEventListener('keydown', (e) => this.onKeyDown(e), false );
+		this.dom.addEventListener('keyup', (e) => this.onKeyUp(e), false );
+		this.dom.addEventListener('contextmenu', (e) => this.onContextMenu(e), false );
 	}
 
 	deactivateInternal() {
@@ -76,6 +76,7 @@ export default class ControlsController extends ControllerBase {
 	onMouseMove(e) {
 		this.model.mouseCoordinates.set(e.offsetX, e.offsetY);
 		this.model.isMouseOver.set(true);
+		e.stopPropagation();
 	}
 
 	onMouseEnter(e) {

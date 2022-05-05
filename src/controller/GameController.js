@@ -76,7 +76,7 @@ export default class GameController extends ControllerBase {
 	}
 
 	updateInternal(delta) {
-		if ((!this.cursorHidden) && this.model.level.isSet() && this.model.level.get().isPlayable) {
+		if ((!this.cursorHidden) && (!this.model.isInEditMode.get()) && this.model.level.isSet() && this.model.level.get().isPlayable) {
 			if (this.hideMouseTimeout <= 0) {
 				this.hideCursor();
 			} else {

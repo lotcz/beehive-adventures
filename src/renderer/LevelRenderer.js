@@ -1,35 +1,26 @@
 import SvgRenderer from "./SvgRenderer";
 import BeeRenderer from "./BeeRenderer";
-import GroundRenderer from "./GroundRenderer";
+import GroundCachedRenderer from "./GroundCachedRenderer";
 import SpriteCollectionRenderer from "./SpriteCollectionRenderer";
-import ParallaxRenderer from "./ParallaxRenderer";
 import ResourceLoader from "../class/ResourceLoader";
+import GroundLiveRenderer from "./GroundLiveRenderer";
 
-export const HIDE_WHEN_OUTTA_SIGHT = false;
 const DEBUG_LEVEL_RENDERER = false;
 
 export default class LevelRenderer extends SvgRenderer {
 	group;
 
-	constructor(game, model, draw) {
+	constructor(game, model, draw, bg) {
 		super(game, model, draw);
+
+		this.bg = bg;
+		this.groundRenderer = null;
 
 		this.group = this.draw.group();
 		this.group.addClass('level');
 
-		this.background = this.group.group().addClass('background');
-
-		// GROUND
+		// for live ground in edit mode
 		this.ground = this.group.group().addClass('ground');
-		this.groundRenderer = new GroundRenderer(this.game, this.model.ground, this.ground);
-		this.addChild(this.groundRenderer);
-
-		// FOREGROUND
-		this.foreground = this.group.group().addClass('foreground');
-
-		// PARALLAX
-		this.parallaxRenderer = new ParallaxRenderer(this.game, this.model.parallax, this.background, this.foreground);
-		this.addChild(this.parallaxRenderer);
 
 		// SPRITES
 		this.sprites = this.group.group().addClass('sprites');
@@ -42,7 +33,15 @@ export default class LevelRenderer extends SvgRenderer {
 			this.addChild(this.beeRenderer);
 		}
 
-		this.model.resources.addOnAddListener((resource) => this.onAddResource(resource));
+		this.curtain = this.group.group().addClass('curtain');
+
+		this.resourceAddedHandler = (resource) => this.onAddResource(resource);
+		this.editModeChangedHandler = () => {
+			if (this.isActivated()) {
+				this.updateGroundRenderer();
+				this.groundRenderer.activate();
+			}
+		}
 
 		this.clipPath = null;
 		this.clipCircle = null;
@@ -50,22 +49,43 @@ export default class LevelRenderer extends SvgRenderer {
 
 	activateInternal() {
 		if (!this.model.isPlayable) {
-			const text = this.draw.defs().text(function(add) {
+			const levelSize = this.model.grid.getMaxCoordinates();
+			this.curtainContent = this.curtain.rect(
+				levelSize.x,
+				levelSize.y
+			).fill('black');
+			this.maskBg = this.curtain.defs().rect(
+				levelSize.x,
+				levelSize.y
+			).fill('white');
+			this.clipPath = this.curtain.mask();
+			this.clipPath.add(this.maskBg);
+			const text = this.curtain.text(function(add) {
 				add.tspan("Beehive").newLine();
 				add.tspan("Adventures").newLine();
-			}).fill('#fff');
-			const center = this.model.grid.getMaxCoordinates().multiply(0.5);
+			}).fill('black');
+			const center = levelSize.multiply(0.5);
 			text.center(center.x, center.y);
 			text.scale(40);
-			//const path = text.path('M 100 200 C 200 100 300 0 400 100 C 500 200 600 300 700 200 C 800 100 900 100 900 100');
-
-			const clipPath = this.draw.clip().add(text);
-			this.group.clipWith(clipPath);
+			this.clipPath.add(text);
+			this.curtain.maskWith(this.clipPath);
 		}
+
+		this.updateGroundRenderer();
+		this.groundRenderer.activate();
+
+		this.model.resources.addOnAddListener(this.resourceAddedHandler);
+		this.game.isInEditMode.addOnChangeListener(this.editModeChangedHandler);
 	}
 
 	deactivateInternal() {
 		if (this.group) this.group.remove();
+		if (this.groundRenderer) {
+			this.removeChild(this.groundRenderer);
+			this.groundRenderer = null;
+		}
+		this.model.resources.removeOnAddListener(this.resourceAddedHandler);
+		this.game.isInEditMode.removeOnChangeListener(this.editModeChangedHandler);
 	}
 
 	renderInternal() {
@@ -76,9 +96,6 @@ export default class LevelRenderer extends SvgRenderer {
 		}
 
 		if (this.model.viewBoxSize.isDirty() || this.model.viewBoxCoordinates.isDirty() || this.model.viewBoxScale.isDirty()) {
-			if (HIDE_WHEN_OUTTA_SIGHT) {
-				this.spritesRenderer.updateOuttaSight();
-			}
 			this.draw.size(this.model.viewBoxSize.x, this.model.viewBoxSize.y);
 			this.draw.viewbox(
 				this.model.viewBoxCoordinates.x,
@@ -86,32 +103,63 @@ export default class LevelRenderer extends SvgRenderer {
 				this.model.viewBoxSize.x * this.model.viewBoxScale.get(),
 				this.model.viewBoxSize.y * this.model.viewBoxScale.get()
 			);
+			//this.groundRenderer.render();
+
 			this.model.viewBoxCoordinates.clean();
 			this.model.viewBoxScale.clean();
 		}
 
 		if (this.model.clipAmount.isDirty() || this.model.clipCenter.isDirty()) {
-			if (this.model.clipAmount.get() > 0) {
-				if (!this.clipPath) {
-					this.clipCircle = this.draw.circle(150);
-					this.clipPath = this.draw.clip().add(this.clipCircle);
-					this.group.clipWith(this.clipPath);
+			if (this.model.clipAmount.get() > 0 || !this.model.isPlayable) {
+				if (this.model.clipAmount.get() > 0) {
+					if (!this.clipPath) {
+						const levelSize = this.model.grid.getMaxCoordinates();
+						this.curtainContent = this.curtain.rect(
+							levelSize.x,
+							levelSize.y
+						).fill('black');
+						this.maskBg = this.curtain.rect(
+							levelSize.x,
+							levelSize.y
+						).fill('white');
+						this.clipCircle = this.curtain.circle(15).fill('black');
+						this.clipPath = this.curtain.mask();
+						this.clipPath.add(this.maskBg);
+						this.clipPath.add(this.clipCircle);
+						this.curtain.maskWith(this.clipPath);
+					}
+					const diameter = this.model.viewBoxSize.size() * this.model.viewBoxScale.get();
+					const radius = diameter * (1 - this.openTween(this.model.clipAmount.get()));
+					this.clipCircle.radius(Math.max(radius, 0));
+					this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 				}
-				const diameter = this.model.viewBoxSize.size();
-				const radius = (diameter * this.model.viewBoxScale.get()) * (1 - this.openTween(this.model.clipAmount.get()));
-				this.clipCircle.radius(Math.max(radius, 0));
-				this.clipCircle.center(this.model.clipCenter.x, this.model.clipCenter.y);
 			} else {
 				if (this.clipPath) {
-					this.group.unclip();
+					this.curtain.unmask();
 					this.clipPath.remove();
 					this.clipPath = null;
+					this.curtainContent.remove();
+					this.curtainContent = null;
+					if (this.clipCircle) this.clipCircle.remove();
 					this.clipCircle = null;
 				}
 			}
 			this.model.clipAmount.clean();
 			this.model.clipCenter.clean();
 		}
+	}
+
+	updateGroundRenderer() {
+		if (this.groundRenderer) {
+			this.removeChild(this.groundRenderer);
+			this.groundRenderer = null;
+		}
+		if (this.game.isInEditMode.get()) {
+			this.groundRenderer = new GroundLiveRenderer(this.game, this.model.ground,  this.model.parallax, this.ground);
+		} else {
+			this.groundRenderer = new GroundCachedRenderer(this.game, this.model.ground, this.model.parallax, this.bg);
+		}
+		this.addChild(this.groundRenderer);
 	}
 
 	openTween(value) {

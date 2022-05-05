@@ -1,4 +1,3 @@
-import SvgRenderer from "./SvgRenderer";
 import {
 	CORNER_LEFT,
 	CORNER_LOWER_LEFT,
@@ -8,15 +7,46 @@ import {
 	CORNER_UPPER_RIGHT
 } from "../model/GridModel";
 import {GROUND_STYLES} from "../builder/GroundStyle";
+import SvgRenderer from "./SvgRenderer";
 
 const DEBUG_GROUND_RENDERER = false;
 
-export default class GroundRenderer extends SvgRenderer {
+export default class GroundLiveRenderer extends SvgRenderer {
 	group;
 
-	constructor(game, model, draw) {
+	constructor(game, model, parallax, draw) {
 		super(game, model, draw);
+		this.parallax = parallax;
 		this.group = null;
+	}
+
+	activateInternal() {
+		const levelSize = this.grid.getMaxCoordinates();
+		let fill = null;
+		if (this.model.backgroundColor !== this.model.backgroundColorEnd) {
+			const gradient = this.draw.gradient('linear', (add) => {
+				add.stop(0, this.parallax.backgroundColor);
+				add.stop(1, this.parallax.backgroundColorEnd);
+				add.from(0, 0);
+				add.to(0, 1);
+			});
+			fill = gradient;
+		} else {
+			fill = this.parallax.backgroundColor;
+		}
+
+		this.bg = this.draw.rect(levelSize.x, levelSize.y).fill(fill);
+	}
+
+	deactivateInternal() {
+		if (this.bg) {
+			this.bg.remove();
+			this.bg = null;
+		}
+		if (this.group) {
+			this.group.remove();
+			this.group = null;
+		}
 	}
 
 	removeTileNeighbors(remaining, tile) {
@@ -68,7 +98,7 @@ export default class GroundRenderer extends SvgRenderer {
 	}
 
 	renderInternal() {
-		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground');
+		if (DEBUG_GROUND_RENDERER) console.log('Rendering ground LIVE');
 
 		if (this.group) this.group.remove();
 		this.group = this.draw.group();
