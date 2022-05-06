@@ -84,9 +84,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 		const levelFolder = this.gui.addFolder('Level');
 		const gridFolder = levelFolder.addFolder('grid')
-		gridFolder.add(level.grid.size, 'x').listen();
-		gridFolder.add(level.grid.size, 'y').listen();
-		gridFolder.add(level.grid.tileRadius, 'value').name('tileRadius').listen();
+		gridFolder.add(level.grid.size, 'x');
+		gridFolder.add(level.grid.size, 'y');
+		gridFolder.add(level.grid.tileRadius, 'value').name('tileRadius');
 		gridFolder.open();
 		const sizeFolder = levelFolder.addFolder('viewBoxSize')
 		sizeFolder.add(level.viewBoxSize, 'x').listen();
@@ -305,25 +305,26 @@ export default class LevelEditorRenderer extends SvgRenderer {
 
 	renderGroundTile(tile) {
 		const level = this.game.level.get();
-		const helper = tile._helper;
+		let helper = tile._helper;
 		if (!helper) {
-			const hex = this.groundTiles.group();
+			helper = this.groundTiles.group();
 			const corners = level.grid
 				.getCorners(new Vector2())
 				.map((c) => [c.x, c.y]);
 			corners.push(corners[0]);
-			hex.polyline(corners).fill('transparent').stroke({width: 2, color: '#fff'});
-			hex.circle(20).fill('#000').center(-10, 0);
-			hex.circle(20).fill('#fff').center(10, 0);
-			const coordinates = level.grid.getCoordinates(tile.position);
-			hex.center(coordinates.x, coordinates.y);
-			tile._helper = hex;
+			helper.polyline(corners).fill('transparent').stroke({width: 2, color: '#fff'});
+			helper.circle(20).fill('#000').center(-10, 0);
+			helper.circle(20).fill('#fff').center(10, 0);
+			tile._helper = helper;
 		}
+		const coordinates = level.grid.getCoordinates(tile.position);
+		helper.center(coordinates.x, coordinates.y);
 	}
 
 	destroyGroundTile(tile) {
 		const helper = tile._helper;
 		if (helper)	helper.remove();
+		tile._helper = null;
 	}
 
 	hideGroundTiles() {
@@ -338,8 +339,8 @@ export default class LevelEditorRenderer extends SvgRenderer {
 	showGroundTiles() {
 		this.hideGroundTiles();
 		this.level = this.game.level.get();
-		this.level.ground.tiles.forEach((tile) => this.renderGroundTile(tile));
 		this.groundTiles.show();
+		this.level.ground.tiles.forEach((tile) => this.renderGroundTile(tile));
 		this.level.ground.tiles.addOnAddListener(this.tileAddedHandler);
 		this.level.ground.tiles.addOnRemoveListener(this.tileRemovedHandler);
 	}
@@ -392,9 +393,9 @@ export default class LevelEditorRenderer extends SvgRenderer {
 			imgFolder.add(sprite.image.path, 'value').name('path');
 			imgFolder.add(sprite.image.coordinates, 'x');
 			imgFolder.add(sprite.image.coordinates, 'y');
-			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation').listen().onChange(() => sprite.image.rotation.makeDirty());
-			imgFolder.add(sprite.image.flipped, 'value').name('flipped').listen().onChange(() => sprite.image.flipped.makeDirty());
-			imgFolder.add(sprite.image.scale, 'value').name('scale').listen().onChange(() => sprite.image.scale.makeDirty());
+			imgFolder.add(sprite.image.rotation, 'value', -180, 180).name('rotation').onChange(() => sprite.image.rotation.makeDirty());
+			imgFolder.add(sprite.image.flipped, 'value').name('flipped').onChange(() => sprite.image.flipped.makeDirty());
+			imgFolder.add(sprite.image.scale, 'value').name('scale').onChange(() => sprite.image.scale.makeDirty());
 			imgFolder.open();
 		}
 

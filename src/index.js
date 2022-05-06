@@ -8,7 +8,7 @@ import Pixies from "./class/Pixies";
 
 const MAX_DELTA = 500;
 const PROFILING_MASTER = false;
-const DEBUG_MASTER = false;
+const DEBUG_MASTER = true;
 
 const game = new GameModel();
 

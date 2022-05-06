@@ -10,6 +10,7 @@ import AnimatedVector2 from "../../class/AnimatedVector2";
 import {NEIGHBOR_TYPE_UP, NEIGHBOR_TYPE_UPPER_LEFT, NEIGHBOR_TYPE_UPPER_RIGHT} from "../../model/GridModel";
 import {IMAGE_BEE} from "../../builder/sprites/SpriteStyleBees";
 import {SPRITE_TYPE_WATER} from "../../builder/sprites/SpriteStyleMinerals";
+import Vector2 from "../../class/Vector2";
 
 // max length of direction vector, pixels per second
 const MAX_SPEED = 1500;
@@ -227,6 +228,8 @@ export default class BeeFlightStrategy extends ControllerBase {
 						position = newPosition;
 						coords = this.grid.getCoordinates(free[0]);
 					} else {
+						position = new Vector2(0, 0);
+						coords = this.grid.getCoordinates(position);
 						console.log('Lost');
 					}
 				} else {
