@@ -24,7 +24,7 @@ export default class EmitterStrategy extends StaticStrategy {
 		this.randomizeTimeout = true;
 		this.ready = true;
 
-		if (this.model.data.timeout) {
+		if (this.model.data.timeout !== undefined) {
 			this.defaultTimeout = this.model.data.timeout;
 		}
 		if (this.model.data.max === undefined) {

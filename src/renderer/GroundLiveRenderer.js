@@ -22,7 +22,7 @@ export default class GroundLiveRenderer extends SvgRenderer {
 
 	activateInternal() {
 		const levelSize = this.grid.getMaxCoordinates();
-		let fill = null;
+		let fill;
 		if (this.model.backgroundColor !== this.model.backgroundColorEnd) {
 			const gradient = this.draw.gradient('linear', (add) => {
 				add.stop(0, this.parallax.backgroundColor);

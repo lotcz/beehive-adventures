@@ -16,10 +16,10 @@ export default class UpdatedStrategy extends SpriteStrategy {
 	 * @param {ControlsModel} controls
 	 * @param {number=} timeout
 	 */
-	constructor(game, model, controls, timeout) {
+	constructor(game, model, controls, timeout = DEFAULT_UPDATE_TIMEOUT) {
 		super(game, model, controls);
 
-		this.defaultTimeout = timeout || DEFAULT_UPDATE_TIMEOUT;
+		this.defaultTimeout = timeout;
 		this.timeout = Math.random() * this.defaultTimeout;
 		this.randomizeTimeout = false;
 		this.randomizeInitialTimeout = true;
