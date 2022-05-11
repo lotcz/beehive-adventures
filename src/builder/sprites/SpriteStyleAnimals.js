@@ -246,7 +246,8 @@ SPRITE_STYLES_ANIMALS[SPRITE_TYPE_HORNET] = {
 	strategy: STRATEGY_FLYING_BUG,
 	data: {
 		size: 2,
-		hurts: 0.04
+		hurts: 0.04,
+		stayHome: true
 	},
 	image: {
 		uri: IMAGE_HORNET,

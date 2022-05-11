@@ -94,6 +94,21 @@ SPRITE_STYLES_SPECIAL[SPRITE_TYPE_SOIL_DOOR_MOUTH] = {
 	}
 };
 
+export const SPRITE_TYPE_ROCK_DOOR_MOUTH = 'rock-door-mouth';
+export const IMAGE_ROCK_DOOR_MOUTH  = 'img/rock-door-mouth.svg';
+import RockDoorMouthImage from "../../../res/img/rock-door-mouth.svg";
+
+SPRITE_STYLES_SPECIAL[SPRITE_TYPE_ROCK_DOOR_MOUTH] = {
+	strategy: STRATEGY_DOOR_MOUTH,
+	image: {
+		uri: IMAGE_ROCK_DOOR_MOUTH,
+		resource: RockDoorMouthImage
+	},
+	data: {
+		crawlable: true
+	}
+};
+
 export const SPRITE_TYPE_DOOR_MOUTH_TRIGGER = 'door-mouth-trigger';
 
 SPRITE_STYLES_SPECIAL[SPRITE_TYPE_DOOR_MOUTH_TRIGGER] = {

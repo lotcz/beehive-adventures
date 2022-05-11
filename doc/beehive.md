@@ -210,7 +210,7 @@ Story
 - take pumpkin seeds to open prison door
 - get to picnic basket and take ant poison
 - poison ants and get girl
-- save ant girl, demo ends
+- save girl, demo ends
 
 TODO:
 =====

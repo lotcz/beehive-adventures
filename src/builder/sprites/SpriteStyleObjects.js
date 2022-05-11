@@ -32,6 +32,18 @@ SPRITE_STYLES_OBJECTS[SPRITE_TYPE_STONE_SOIL] = {
 	}
 };
 
+export const SPRITE_TYPE_CHLOROPLAST = 'chloroplast';
+export const IMAGE_CHLOROPLAST = 'img/chloroplast.svg';
+import ChloroplastImage from "../../../res/img/chloroplast.svg";
+
+SPRITE_STYLES_OBJECTS[SPRITE_TYPE_CHLOROPLAST] = {
+	strategy: STRATEGY_OBJECT,
+	image: {
+		uri: IMAGE_CHLOROPLAST,
+		resource: ChloroplastImage
+	}
+};
+
 export const SPRITE_TYPE_BEE_LIFE = 'bee-life';
 export const IMAGE_BEE_LIFE = 'img/bee-life.svg';
 import BeeLifeImage from "../../../res/img/bee-life.svg";

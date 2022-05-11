@@ -41,8 +41,13 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 		if (!this.model.data.homePosition) {
 			this.model.data.homePosition = this.model.position.getState();
 		}
-		this.homeCoordinates = this.grid.getCoordinates(new Vector2(this.model.data.homePosition));
+		const home = new Vector2(this.model.data.homePosition);
+		this.homeCoordinates = this.getCoords(home);
 		this.model.data.stayHome = this.model.data.stayHome || false;
+		if (this.model.data.stayHome) {
+			this.model.position.set(home);
+			this.model.image.coordinates.set(this.homeCoordinates);
+		}
 
 		this.visitorsPosition = null;
 		this.positionChangedHandler = (p) => this.onPositionChanged(p);
@@ -171,8 +176,10 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 				nearestPosition = available[i];
 			}
 		}
-		this.setTargetPosition(nearestPosition);
-		this.model.image.flipped.set(nearestPosition.x <= this.model.position.x);
+		if (nearestPosition) {
+			this.setTargetPosition(nearestPosition);
+			this.model.image.flipped.set(nearestPosition.x <= this.model.position.x);
+		}
 	}
 
 	fly() {
@@ -235,4 +242,5 @@ export default class FlyingBugStrategy extends AnimatedStrategy {
 		this.grid.getAffectedPositions(this.model.position, this.model.data.size).forEach((p) => this.chessboard.addVisitor(p, this.model));
 		this.visitorsPosition = this.model.position.clone();
 	}
+
 }
